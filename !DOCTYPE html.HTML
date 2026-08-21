@@ -1252,10 +1252,314 @@ body{
         font-size:95px;
     }
 }
+
+/* ================= PASSCODE SCREEN ================= */
+
+.passcode-screen{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:50000;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(255,70,160,.16),
+            transparent 35%
+        ),
+        #05030a;
+
+    backdrop-filter:blur(30px);
+
+    transition:
+        opacity .8s ease,
+        visibility .8s ease;
+}
+
+.passcode-screen.hide{
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+}
+
+.passcode-box{
+
+    width:min(430px,100%);
+
+    padding:50px 30px;
+
+    text-align:center;
+
+    border-radius:35px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.09),
+            rgba(255,255,255,.025)
+        );
+
+    border:1px solid
+        rgba(255,255,255,.12);
+
+    backdrop-filter:blur(35px);
+
+    box-shadow:
+        0 40px 120px
+        rgba(0,0,0,.7);
+
+    animation:
+        passcodeIn .9s ease both;
+}
+
+@keyframes passcodeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(40px)
+            scale(.9);
+
+        filter:blur(10px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+        filter:blur(0);
+    }
+}
+
+.passcode-icon{
+
+    font-size:55px;
+
+    margin-bottom:20px;
+
+    filter:
+        drop-shadow(
+            0 0 25px
+            rgba(255,70,160,.5)
+        );
+}
+
+.passcode-small{
+
+    color:#ffafd5;
+
+    font-size:10px;
+
+    letter-spacing:4px;
+
+    font-weight:800;
+}
+
+.passcode-title{
+
+    margin-top:15px;
+
+    font-size:38px;
+
+    font-weight:950;
+
+    background:
+        linear-gradient(
+            90deg,
+            white,
+            #ffafd5,
+            #b69aff,
+            white
+        );
+
+    background-size:300% auto;
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    color:transparent;
+
+    animation:
+        gradientMove 6s linear infinite;
+}
+
+.passcode-text{
+
+    margin-top:12px;
+
+    color:#88818f;
+
+    font-size:14px;
+
+    line-height:1.7;
+}
+
+.passcode-input{
+
+    display:block;
+
+    width:100%;
+
+    margin-top:28px;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    border:1px solid
+        rgba(255,255,255,.12);
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color:white;
+
+    text-align:center;
+
+    font-size:28px;
+
+    font-weight:900;
+
+    letter-spacing:12px;
+
+    transition:.3s;
+}
+
+.passcode-input:focus{
+
+    border-color:
+        rgba(255,170,215,.55);
+
+    box-shadow:
+        0 0 30px
+        rgba(255,70,160,.15);
+}
+
+.passcode-btn{
+
+    width:100%;
+
+    margin-top:18px;
+
+    padding:17px;
+
+    border:0;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff4c9b,
+            #925bff
+        );
+
+    color:white;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.passcode-btn:hover{
+
+    transform:
+        translateY(-3px)
+        scale(1.02);
+
+    box-shadow:
+        0 15px 45px
+        rgba(255,60,150,.3);
+}
+
+.passcode-message{
+
+    min-height:22px;
+
+    margin-top:16px;
+
+    color:#ff8fbd;
+
+    font-size:13px;
+
+    font-weight:700;
+}
 </style>
 </head>
 
 <body>
+
+<!-- ================= PASSCODE ================= -->
+
+<div class="passcode-screen" id="passcodeScreen">
+
+    <div class="passcode-box">
+
+        <div class="passcode-icon">
+            🔐
+        </div>
+
+        <div class="passcode-small">
+            PRIVATE SURPRISE
+        </div>
+
+        <div class="passcode-title">
+            Enter Passcode
+        </div>
+
+        <div class="passcode-text">
+            This surprise is only for Zaina.
+        </div>
+
+        <input
+            id="passcodeInput"
+            class="passcode-input"
+            type="password"
+            inputmode="numeric"
+            maxlength="4"
+            placeholder="••••"
+            autocomplete="off"
+        />
+
+        <button
+            class="passcode-btn"
+            onclick="unlockBirthday()"
+        >
+            UNLOCK
+        </button>
+
+        <div
+            id="passcodeMessage"
+            class="passcode-message"
+        ></div>
+
+    </div>
+
+</div>
 
 <!-- BACKGROUND -->
 
@@ -1975,6 +2279,91 @@ function celebration(){
     }
 }
 
+
+/* ================= PASSCODE SYSTEM ================= */
+
+const BIRTHDAY_PASSCODE = "1212";
+
+let passwordUnlocked = false;
+
+function unlockBirthday(){
+
+    const input =
+        document.getElementById("passcodeInput");
+
+    const message =
+        document.getElementById("passcodeMessage");
+
+    const screen =
+        document.getElementById("passcodeScreen");
+
+    if(!input || !message || !screen){
+        return;
+    }
+
+    const entered =
+        input.value.trim();
+
+    if(entered === BIRTHDAY_PASSCODE){
+
+        passwordUnlocked = true;
+
+        message.textContent =
+            "ACCESS GRANTED ❤️";
+
+        setTimeout(function(){
+
+            screen.classList.add("hide");
+
+        }, 500);
+
+        return;
+    }
+
+    message.textContent =
+        "Incorrect passcode. Try again.";
+
+    input.value = "";
+
+    input.focus();
+}
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        const input =
+            document.getElementById(
+                "passcodeInput"
+            );
+
+        if(
+            e.key === "Enter" &&
+            input &&
+            document.activeElement === input
+        ){
+
+            unlockBirthday();
+        }
+
+    }
+);
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const input =
+            document.getElementById(
+                "passcodeInput"
+            );
+
+        if(input){
+            input.focus();
+        }
+
+    }
+);
 </script>
 
 </body>
