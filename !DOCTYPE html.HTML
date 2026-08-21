@@ -2022,36 +2022,294 @@ input{
     max-width:100%;
 }
 
+
+/* ZAINA PASSCODE CSS START */
+
+#passcodeScreen{
+    position:fixed;
+    inset:0;
+    z-index:100000;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(255,70,160,.16),
+            transparent 35%
+        ),
+        #05030a;
+
+    backdrop-filter:blur(30px);
+
+    opacity:1;
+    visibility:visible;
+
+    transition:
+        opacity .7s ease,
+        visibility .7s ease;
+}
+
+#passcodeScreen.unlocked{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.passcodeBox{
+    width:min(430px,100%);
+
+    padding:45px 30px;
+
+    text-align:center;
+
+    border-radius:35px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.09),
+            rgba(255,255,255,.025)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    backdrop-filter:blur(35px);
+
+    box-shadow:
+        0 40px 120px
+        rgba(0,0,0,.65);
+
+    animation:
+        passcodeIn
+        .8s
+        cubic-bezier(.2,.8,.2,1)
+        both;
+}
+
+@keyframes passcodeIn{
+
+    from{
+        opacity:0;
+        transform:
+            translateY(40px)
+            scale(.9);
+    }
+
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.passcodeLock{
+    font-size:60px;
+
+    margin-bottom:20px;
+
+    animation:
+        heartbeat
+        1.5s
+        infinite;
+}
+
+.passcodeSmall{
+
+    color:#ffafd5;
+
+    font-size:9px;
+
+    letter-spacing:4px;
+
+    margin-bottom:12px;
+}
+
+.passcodeBox h1{
+
+    font-size:
+        clamp(32px,7vw,48px);
+
+    font-weight:950;
+
+    color:white;
+}
+
+.passcodeBox p{
+
+    margin-top:12px;
+
+    color:#8f8996;
+
+    font-size:14px;
+
+    line-height:1.7;
+}
+
+#zainaPasscode{
+
+    display:block;
+
+    width:100%;
+
+    margin-top:28px;
+
+    padding:17px 20px;
+
+    border-radius:18px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.055);
+
+    color:white;
+
+    text-align:center;
+
+    font-size:24px;
+
+    font-weight:900;
+
+    letter-spacing:12px;
+
+    transition:.3s;
+}
+
+#zainaPasscode:focus{
+
+    border-color:
+        rgba(255,120,190,.65);
+
+    box-shadow:
+        0 0 35px
+        rgba(255,70,160,.18);
+}
+
+#zainaPasscode::placeholder{
+
+    color:#625c68;
+
+    letter-spacing:8px;
+}
+
+#passcodeButton{
+
+    width:100%;
+
+    margin-top:18px;
+
+    padding:16px;
+
+    border:0;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff4c9b,
+            #925bff
+        );
+
+    color:white;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+#passcodeButton:hover{
+
+    transform:
+        translateY(-3px)
+        scale(1.02);
+
+    box-shadow:
+        0 15px 45px
+        rgba(255,60,160,.3);
+}
+
+#passcodeError{
+
+    min-height:22px;
+
+    margin-top:15px;
+
+    color:#ff719f;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+.passcodeShake{
+
+    animation:
+        passcodeShake
+        .35s
+        ease;
+}
+
+@keyframes passcodeShake{
+
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-8px);
+    }
+
+    75%{
+        transform:translateX(8px);
+    }
+}
+
+/* ZAINA PASSCODE CSS END */
+
 </style>
 </head>
 
 <body>
 
-<!-- ================= PASSCODE ================= -->
+<!-- ZAINA PASSCODE START -->
 
-<div class="passcode-screen" id="passcodeScreen">
+<div id="passcodeScreen">
 
-    <div class="passcode-box">
+    <div class="passcodeBox">
 
-        <div class="passcode-icon">
+        <div class="passcodeLock">
             🔐
         </div>
 
-        <div class="passcode-small">
+        <div class="passcodeSmall">
             PRIVATE SURPRISE
         </div>
 
-        <div class="passcode-title">
+        <h1>
             Enter Passcode
-        </div>
+        </h1>
 
-        <div class="passcode-text">
-            This surprise is only for Zaina.
-        </div>
+        <p>
+            Enter the passcode to open your surprise.
+        </p>
 
         <input
-            id="passcodeInput"
-            class="passcode-input"
+            id="zainaPasscode"
             type="password"
             inputmode="numeric"
             maxlength="4"
@@ -2060,18 +2318,24 @@ input{
         />
 
         <button
-            class="passcode-btn"
-            onclick="unlockBirthday()"
+            id="passcodeButton"
+            type="button"
+            onclick="checkZainaPasscode()"
         >
             UNLOCK
         </button>
 
         <div
-            id="passcodeMessage"
-            class="passcode-message"
+            id="passcodeError"
         ></div>
 
     </div>
+
+</div>
+
+<!-- ZAINA PASSCODE END -->
+
+
 
 </div>
 
@@ -2794,74 +3058,146 @@ function celebration(){
 }
 
 
-/* ================= PASSCODE SYSTEM ================= */
 
-const BIRTHDAY_PASSCODE = "1990";
+/* ZAINA PASSCODE JS START */
 
-let passwordUnlocked = false;
+let zainaUnlocked = false;
 
-function unlockBirthday(){
+function checkZainaPasscode(){
 
     const input =
-        document.getElementById("passcodeInput");
-
-    const message =
-        document.getElementById("passcodeMessage");
+        document.getElementById(
+            "zainaPasscode"
+        );
 
     const screen =
-        document.getElementById("passcodeScreen");
+        document.getElementById(
+            "passcodeScreen"
+        );
 
-    if(!input || !message || !screen){
+    const error =
+        document.getElementById(
+            "passcodeError"
+        );
+
+    const box =
+        document.querySelector(
+            ".passcodeBox"
+        );
+
+    if(!input || !screen){
         return;
     }
 
     const entered =
         input.value.trim();
 
-    if(entered === BIRTHDAY_PASSCODE){
+    /*
+       CORRECT PASSCODE
+       1990
+    */
 
-        passwordUnlocked = true;
+    if(entered === "1990"){
 
-        message.textContent =
-            "ACCESS GRANTED ❤️";
+        zainaUnlocked = true;
+
+        error.textContent =
+            "Unlocked ✓";
+
+        error.style.color =
+            "#8fffc1";
+
+        input.disabled = true;
+
+        const button =
+            document.getElementById(
+                "passcodeButton"
+            );
+
+        if(button){
+            button.disabled = true;
+            button.style.opacity = ".6";
+        }
 
         setTimeout(function(){
 
-            screen.classList.add("hide");
+            screen.classList.add(
+                "unlocked"
+            );
 
-        }, 500);
+            setTimeout(function(){
+
+                screen.style.display =
+                    "none";
+
+            },750);
+
+        },350);
 
         return;
     }
 
-    message.textContent =
+    /*
+       WRONG PASSCODE
+    */
+
+    error.textContent =
         "Incorrect passcode. Try again.";
+
+    error.style.color =
+        "#ff719f";
 
     input.value = "";
 
+    if(box){
+
+        box.classList.remove(
+            "passcodeShake"
+        );
+
+        void box.offsetWidth;
+
+        box.classList.add(
+            "passcodeShake"
+        );
+    }
+
     input.focus();
 }
+
+
+/*
+   ENTER KEY SUPPORT
+*/
 
 document.addEventListener(
     "keydown",
     function(e){
 
-        const input =
+        const screen =
             document.getElementById(
-                "passcodeInput"
+                "passcodeScreen"
             );
 
         if(
             e.key === "Enter" &&
-            input &&
-            document.activeElement === input
+            screen &&
+            !screen.classList.contains(
+                "unlocked"
+            )
         ){
 
-            unlockBirthday();
+            checkZainaPasscode();
         }
 
     }
 );
+
+
+/*
+   Prevent the birthday page from
+   being used before unlocking.
+*/
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -2869,7 +3205,7 @@ document.addEventListener(
 
         const input =
             document.getElementById(
-                "passcodeInput"
+                "zainaPasscode"
             );
 
         if(input){
@@ -2878,9 +3214,14 @@ document.addEventListener(
 
     }
 );
+
+/* ZAINA PASSCODE JS END */
+
 </script>
 
 </body>
 </html>
+
+
 
 
