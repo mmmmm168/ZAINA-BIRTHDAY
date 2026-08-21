@@ -3059,6 +3059,9 @@ function celebration(){
 
 
 
+
+
+
 /* ZAINA PASSCODE JS START */
 
 let zainaUnlocked = false;
@@ -3066,24 +3069,16 @@ let zainaUnlocked = false;
 function checkZainaPasscode(){
 
     const input =
-        document.getElementById(
-            "zainaPasscode"
-        );
+        document.getElementById("zainaPasscode");
 
     const screen =
-        document.getElementById(
-            "passcodeScreen"
-        );
+        document.getElementById("passcodeScreen");
 
     const error =
-        document.getElementById(
-            "passcodeError"
-        );
+        document.getElementById("passcodeError");
 
     const box =
-        document.querySelector(
-            ".passcodeBox"
-        );
+        document.querySelector(".passcodeBox");
 
     if(!input || !screen){
         return;
@@ -3092,27 +3087,21 @@ function checkZainaPasscode(){
     const entered =
         input.value.trim();
 
-    /*
-       CORRECT PASSCODE
-       1990
-    */
+    /* CORRECT PASSCODE */
 
     if(entered === "1990"){
 
         zainaUnlocked = true;
 
-        error.textContent =
-            "Unlocked ✓";
-
-        error.style.color =
-            "#8fffc1";
+        if(error){
+            error.textContent = "Unlocked ✓";
+            error.style.color = "#8fffc1";
+        }
 
         input.disabled = true;
 
         const button =
-            document.getElementById(
-                "passcodeButton"
-            );
+            document.getElementById("passcodeButton");
 
         if(button){
             button.disabled = true;
@@ -3121,14 +3110,11 @@ function checkZainaPasscode(){
 
         setTimeout(function(){
 
-            screen.classList.add(
-                "unlocked"
-            );
+            screen.classList.add("unlocked");
 
             setTimeout(function(){
 
-                screen.style.display =
-                    "none";
+                screen.style.display = "none";
 
             },750);
 
@@ -3137,15 +3123,16 @@ function checkZainaPasscode(){
         return;
     }
 
-    /*
-       WRONG PASSCODE
-    */
+    /* WRONG PASSCODE */
 
-    error.textContent =
-        "Incorrect passcode. Try again.";
+    if(error){
 
-    error.style.color =
-        "#ff719f";
+        error.textContent =
+            "Incorrect passcode. Try again.";
+
+        error.style.color =
+            "#ff719f";
+    }
 
     input.value = "";
 
@@ -3166,9 +3153,7 @@ function checkZainaPasscode(){
 }
 
 
-/*
-   ENTER KEY SUPPORT
-*/
+/* ENTER KEY */
 
 document.addEventListener(
     "keydown",
@@ -3182,9 +3167,7 @@ document.addEventListener(
         if(
             e.key === "Enter" &&
             screen &&
-            !screen.classList.contains(
-                "unlocked"
-            )
+            !screen.classList.contains("unlocked")
         ){
 
             checkZainaPasscode();
@@ -3194,26 +3177,86 @@ document.addEventListener(
 );
 
 
-/*
-   Prevent the birthday page from
-   being used before unlocking.
-*/
+/* ============================================================
+   FORCE LOCK ON EVERY PAGE LOAD
+   ============================================================ */
 
-document.addEventListener(
-    "DOMContentLoaded",
+window.addEventListener(
+    "load",
     function(){
+
+        zainaUnlocked = false;
+
+        const screen =
+            document.getElementById(
+                "passcodeScreen"
+            );
 
         const input =
             document.getElementById(
                 "zainaPasscode"
             );
 
+        if(screen){
+
+            screen.classList.remove(
+                "unlocked"
+            );
+
+            screen.style.display =
+                "flex";
+
+            screen.style.opacity =
+                "1";
+
+            screen.style.visibility =
+                "visible";
+
+            screen.style.pointerEvents =
+                "auto";
+        }
+
         if(input){
-            input.focus();
+
+            input.disabled = false;
+
+            input.value = "";
+
+            setTimeout(function(){
+
+                input.focus();
+
+            },300);
         }
 
     }
 );
+
+
+/* ============================================================
+   NO LOCAL STORAGE
+   NO SESSION STORAGE
+   NO COOKIES
+   NO REMEMBER LOGIN
+   EVERY REFRESH REQUIRES 1990
+   ============================================================ */
+
+try{
+
+    localStorage.removeItem(
+        "zainaUnlocked"
+    );
+
+}catch(e){}
+
+try{
+
+    sessionStorage.removeItem(
+        "zainaUnlocked"
+    );
+
+}catch(e){}
+
 
 /* ZAINA PASSCODE JS END */
 
@@ -3221,6 +3264,7 @@ document.addEventListener(
 
 </body>
 </html>
+
 
 
 
