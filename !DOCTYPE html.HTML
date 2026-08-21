@@ -2104,6 +2104,163 @@ body {
     }
 }
 
+
+/* =========================================================
+   FINAL ZAINA FLOW — NO AUTO JUMP
+   ========================================================= */
+
+html {
+    scroll-behavior: auto !important;
+    overflow-x: hidden !important;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100dvh;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+/* Never hide the hero when the surprise is revealed */
+.hero {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 100dvh !important;
+}
+
+/* Content stays in normal document flow */
+#content {
+    position: relative !important;
+    width: 100% !important;
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: translateY(30px);
+}
+
+#content.show {
+    opacity: 1;
+    visibility: visible;
+    max-height: none;
+    overflow: visible;
+    pointer-events: auto;
+
+    margin: 0 !important;
+
+    transform: translateY(0);
+
+    animation: finalZainaContentReveal 1.2s ease both;
+}
+
+@keyframes finalZainaContentReveal {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Message must come before gifts */
+.message {
+    position: relative !important;
+    width: min(900px, calc(100% - 32px)) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Gifts remain naturally below message */
+.gifts {
+    position: relative !important;
+    width: min(1150px, calc(100% - 32px)) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Prevent horizontal clipping on small screens */
+.heroContent,
+.messageCard,
+.gifts,
+.signature {
+    max-width: 100%;
+}
+
+img,
+video,
+canvas {
+    max-width: 100%;
+}
+
+@media (max-width: 600px) {
+
+    .hero {
+        min-height: 100dvh !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .heroContent {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .heroName {
+        font-size: clamp(58px, 22vw, 110px) !important;
+        letter-spacing: -5px !important;
+        line-height: .9 !important;
+        word-break: normal !important;
+    }
+
+    .heroTitle {
+        font-size: clamp(25px, 8vw, 42px) !important;
+    }
+
+    .heroDesc {
+        width: 100% !important;
+        max-width: 500px !important;
+    }
+
+    .message {
+        width: calc(100% - 24px) !important;
+        padding-top: 35px !important;
+    }
+
+    .messageCard {
+        width: 100% !important;
+        padding: 30px 20px !important;
+        border-radius: 28px !important;
+    }
+
+    .gifts {
+        width: calc(100% - 24px) !important;
+        padding-top: 55px !important;
+    }
+
+    .giftGrid {
+        width: 100% !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    .gift {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .signature {
+        width: calc(100% - 24px) !important;
+    }
+}
+
 </style>
 
 <script>
@@ -2331,7 +2488,7 @@ document.addEventListener("DOMContentLoaded", function () {
               isTransitioning = false;
 
               if (screenName === 'message') {
-                revealMessageOnScroll();
+// Message reveal is controlled only by TOUCH FOR SURPRISE.
                 clearTimeout(messageToGiftTimer);
                 messageToGiftTimer = setTimeout(function () {
                   if (currentScreen === 'message' && !selectedGift && !isTransitioning) {
@@ -2396,7 +2553,7 @@ document.addEventListener("DOMContentLoaded", function () {
         passcodeCard.classList.add('shake');
         setPasscodeMessage('Incorrect passcode\nPlease try again.', true);
         passcodeInput.value = '';
-        passcodeInput.focus();
+// Password input focus intentionally disabled to prevent viewport movement.
       }
 
       passcodeInput.addEventListener('input', function () {
@@ -2497,218 +2654,9 @@ document.addEventListener("DOMContentLoaded", function () {
       typeText();
 
       function revealMessageOnScroll() {
-        const paragraphs = messageCard.querySelectorAll('p');
-        paragraphs.forEach((p, index) => {
-          const reveal = function () {
-            const rect = p.getBoundingClientRect();
-            if (rect.top < window.innerHeight * 0.88) {
-              p.classList.add('visible');
-            }
-          };
-          reveal();
-          p.style.transitionDelay = (index * 0.12) + 's';
-        });
-
-        messageCard.classList.add('show');
-      }
-
-      
-
-      function handleTouchForSurprise() {
-        if (isTransitioning || !passwordUnlocked) return;
-        showSurprise();
-      }
-
-      touchBtn.addEventListener('click', handleTouchForSurprise);
-
-      const giftData = {
-        1: {
-          emoji: '🤗',
-          title: 'Hug',
-          text: 'Sending you a huge birthday hug filled with happiness, warmth and good wishes. May your special day be filled with beautiful moments and smiles.'
-        },
-        2: {
-          emoji: '🎂',
-          title: 'Birthday Cake',
-          text: 'A beautiful birthday cake just for you! Make a wish, enjoy your special day and may every new chapter of your life bring you something wonderful.'
-        },
-        3: {
-          emoji: '❤️',
-          title: 'Heart Message',
-          text: 'You are truly special and you deserve happiness, peace, success and beautiful memories. Keep smiling, keep believing in yourself and always remember how wonderful you are.'
-        }
-      };
-
-      function createSparkleBurst(x, y, count = 20) {
-        for (let i = 0; i < count; i++) {
-          const sparkle = document.createElement('span');
-          sparkle.className = 'sparkle';
-          sparkle.style.left = x + 'px';
-          sparkle.style.top = y + 'px';
-          sparkle.style.setProperty('--dx', ((Math.random() * 180) - 90) + 'px');
-          sparkle.style.setProperty('--dy', ((Math.random() * 180) - 90) + 'px');
-          document.body.appendChild(sparkle);
-          setTimeout(() => sparkle.remove(), 1200);
-        }
-      }
-
-      const confettiPalette = ['#ff4faa', '#ffb6d8', '#c7b4ff', '#ffffff', '#ffc857', '#8ecbff'];
-
-      function launchConfettiBurst(count = 60) {
-        for (let i = 0; i < count; i++) {
-          const piece = document.createElement('div');
-          piece.className = 'confetti';
-          piece.style.left = Math.random() * 100 + 'vw';
-          piece.style.background = confettiPalette[Math.floor(Math.random() * confettiPalette.length)];
-          piece.style.setProperty('--tx', ((Math.random() * 200) - 100) + 'px');
-          piece.style.transform = 'rotate(' + (Math.random() * 180) + 'deg)';
-          piece.style.animationDuration = (2.8 + Math.random() * 2.2) + 's';
-          document.body.appendChild(piece);
-          setTimeout(() => piece.remove(), 5000);
-        }
-      }
-
-      function handleGiftSelection(number) {
-        if (!passwordUnlocked || !surpriseShown || selectedGift !== null || isTransitioning) return;
-
-        selectedGift = number;
-        const selectedBox = document.getElementById('gift' + number);
-        selectedBox.classList.add('selected');
-
-        [1, 2, 3].forEach((giftIndex) => {
-          if (giftIndex !== number) {
-            document.getElementById('gift' + giftIndex).classList.add('locked');
-          }
-        });
-
-        document.getElementById('popupEmoji').textContent = giftData[number].emoji;
-        document.getElementById('popupTitle').textContent = giftData[number].title;
-        document.getElementById('popupText').textContent = giftData[number].text;
-        overlay.classList.add('active');
-
-        const rect = selectedBox.getBoundingClientRect();
-        createSparkleBurst(rect.left + selectedBox.offsetWidth / 2, rect.top + selectedBox.offsetHeight / 2, 55);
-        setTimeout(function () {
-          launchConfettiBurst(70);
-        }, 150);
-      }
-
-      document.querySelectorAll('.gift').forEach((gift) => {
-        gift.addEventListener('click', function () {
-          handleGiftSelection(Number(gift.dataset.gift));
-        });
-      });
-
-      function closePopup() {
-        overlay.classList.remove('active');
-
-        if (selectedGift !== null && !finalRevealShown) {
-          finalRevealShown = true;
-          setTimeout(function () {
-            showScreen('final');
-          }, 180);
-        }
-      }
-
-      document.getElementById('closePopupBtn').addEventListener('click', closePopup);
-      overlay.addEventListener('click', function (event) {
-        if (event.target === this) closePopup();
-      });
-
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-          if (overlay.classList.contains('active')) {
-            closePopup();
-          }
-        }
-      });
-
-      document.addEventListener('mousemove', function (event) {
-        const moveX = (event.clientX / window.innerWidth - 0.5) * 10;
-        const moveY = (event.clientY / window.innerHeight - 0.5) * 8;
-        document.querySelectorAll('.gift').forEach((gift) => {
-          const rect = gift.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-          const dx = (event.clientX - centerX) / rect.width;
-          const dy = (event.clientY - centerY) / rect.height;
-          if (!gift.classList.contains('selected') && !gift.classList.contains('locked')) {
-            gift.style.transform = 'perspective(1200px) rotateX(' + (dy * -10 + moveY / 2) + 'deg) rotateY(' + (dx * 12 + moveX) + 'deg) translateY(-4px)';
-          }
-        });
-      });
-
-      document.addEventListener('mouseleave', function () {
-        document.querySelectorAll('.gift').forEach((gift) => {
-          if (!gift.classList.contains('selected') && !gift.classList.contains('locked')) {
-            gift.style.transform = '';
-          }
-        });
-      });
-
-      function resetExperienceState() {
-        passwordUnlocked = false;
-        surpriseShown = false;
-        selectedGift = null;
-        finalRevealShown = false;
-        clearPasscodeMessage();
-        passcodeInput.value = '';
-        passcodeCard.classList.remove('success', 'shake');
-        unlockBtn.disabled = false;
-        if (introScreen) introScreen.classList.remove('hide');
-        document.querySelectorAll('.gift').forEach((gift) => {
-          gift.classList.remove('selected', 'locked');
-          gift.style.transform = '';
-        });
-        overlay.classList.remove('active');
-      }
-
-      window.addEventListener('beforeunload', function () {
-        selectedGift = null;
-        finalRevealShown = false;
-      });
-
-      resetExperienceState();
-    })();
-  
-/* =========================================================
-   FINAL NO-AUTO-SKIP SHOW SURPRISE
-   ========================================================= */
-
-
-
-    if (typeof surpriseShown !== "undefined") {
-        if (surpriseShown) return;
-        surpriseShown = true;
-    }
-
-    const content =
-        document.getElementById("content");
-
-    if (!content) return;
-
-    content.classList.add("show");
-
-    const button =
-        document.getElementById("touchBtn");
-
-    if (button) {
-        button.style.opacity = "0";
-        button.style.transform = "scale(.85)";
-        button.style.pointerEvents = "none";
-
-        setTimeout(function () {
-            button.style.display = "none";
-        }, 450);
-    }
-
-    if (typeof celebration === "function") {
-        celebration();
-    }
-
-    /*
-       IMPORTANT:
-       NO */
+    // DISABLED.
+    // The birthday message must NEVER reveal itself because of scrolling.
+    return;
 }
 </script>
 
@@ -2883,6 +2831,7 @@ function openGift(number) {
 
 </body>
 </html>
+
 
 
 
