@@ -11,35 +11,21 @@
 *{
     margin:0;
     padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:auto;
-}
-
-body{
-    min-height:100vh;
-    overflow-x:hidden;
-    background:#05030a;
-    color:#fff;
-    font-family:Segoe UI,Arial,sans-serif;
-}
-
-/* ================= BACKGROUND ================= */
-
-.bg{
-    position:fixed;
-    inset:0;
-    z-index:-10;
-    overflow:hidden;
-
-    background:
-        radial-gradient(circle at 15% 15%,
-        rgba(255,50,150,.18),
-        transparent 30%),
-
-        radial-gradient(circle at 85% 25%,
+            /* Centered, responsive dialog sizing */
+            position: relative;
+            width: min(calc(100vw - 24px), 560px);
+            max-width: 100%;
+            max-height: calc(100dvh - 24px);
+            margin: auto;
+            padding: clamp(20px, 4vw, 56px);
+            text-align: center;
+            border-radius: clamp(18px, 3vw, 40px);
+            background: linear-gradient(145deg, #21172f, #0b0712);
+            border: 1px solid rgba(255,255,255,0.14);
+            box-shadow: 0 50px 140px rgba(0,0,0,0.8);
+            transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         rgba(110,70,255,.18),
         transparent 32%),
 
@@ -67,19 +53,18 @@ body{
 }
 
 .orb.one{
-    left:-180px;
-    top:5%;
-    background:#ff2d91;
-}
-
-.orb.two{
-    right:-180px;
-    top:35%;
-    background:#6747ff;
-    animation-delay:2s;
-}
-
-.orb.three{
+       position: absolute;
+       right: 16px;
+       top: 16px;
+       width: 42px;
+       height: 42px;
+       border: 0;
+       border-radius: 50%;
+       background: rgba(255,255,255,0.06);
+       color: white;
+       font-size: 26px;
+       cursor: pointer;
+       transition: .3s;
     left:35%;
     bottom:-200px;
     background:#ff4fa9;
@@ -2280,7 +2265,106 @@ input{
 }
 
 /* ZAINA PASSCODE CSS END */
+</style>
 
+<style>
+/* ======= CENTERING & RESPONSIVE FIXES (Non-invasive overrides) ======= */
+
+/* Make screen containers consistently centered and responsive */
+.screen,
+.passcode-screen,
+#passcodeScreen {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-height: 100dvh !important;
+    padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)) !important;
+}
+
+.screen > *,
+#content > * {
+    width: min(100%, 1100px) !important;
+    margin-inline: auto !important;
+}
+
+/* Message card sizing */
+.messageCard {
+    width: min(calc(100% - 24px), 760px) !important;
+    margin-inline: auto !important;
+    padding: clamp(20px, 4vw, 48px) !important;
+    box-sizing: border-box !important;
+}
+
+/* Gift grid and gift sizing */
+.giftGrid {
+    width: min(100%, 1100px) !important;
+    margin-inline: auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: clamp(16px, 3vw, 36px) !important;
+    justify-items: center !important;
+}
+
+.gift {
+    width: clamp(220px, 25vw, 360px) !important;
+    min-height: auto !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+@media (max-width: 1024px) {
+    .giftGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+@media (max-width: 800px) {
+    .giftGrid { grid-template-columns: 1fr !important; }
+    .gift { width: min(88vw, 320px) !important; }
+}
+
+/* Popup centered sizing and image behavior */
+.overlay { align-items: center; justify-content: center; }
+.popup { width: min(calc(100vw - 24px), 560px) !important; max-height: calc(100dvh - 24px) !important; margin: auto !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
+.popupImageWrap img, .popupImage { display: block !important; width: 100% !important; max-width: 100% !important; height: auto !important; object-fit: contain !important; margin-inline: auto !important; }
+
+/* Ensure passcode card group stays centered */
+.passcode-card, .passcodeBox, .passcode-box { width: min(600px, calc(100% - 28px)) !important; margin-inline: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; padding: clamp(20px, 4vw, 56px) !important; }
+
+/* Prevent decorations from affecting layout */
+.bg, .star-field, .scene-particles, .sparkle, .confetti, .particleBurst, .floatingHeart { pointer-events: none !important; }
+
+/* Ensure decorative layers never expand page width */
+.bg, .star-field, .scene-particles {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+}
+
+/* Prevent gifts from overflowing their grid cell */
+.gift {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+}
+
+.giftGrid { padding-inline: 8px !important; }
+
+/* Minor typographic safety */
+.heroDesc, .introText, .giftsIntro { max-width: min(780px, 90%) !important; margin-inline: auto !important; }
+
+/* Keep final signature centered and within viewport */
+.finalReveal, .finalReveal-inner, .signature { width: min(100%, 1100px) !important; margin-inline: auto !important; }
+
+/* End overrides */
+</style>
 </style>
 </head>
 
@@ -2288,48 +2372,29 @@ input{
 
 <!-- ZAINA PASSCODE START -->
 
-<div id="passcodeScreen">
+<!-- ZAINA PASSCODE START -->
 
-    <div class="passcodeBox">
+<div class="screen passcode-screen active" id="passcodeScreen" data-screen="passcode" aria-live="polite" aria-hidden="false">
+  <div class="passcode-card" id="passcodeCard">
+    <div class="passcode-kicker">PRIVATE SURPRISE</div>
+    <h1 class="passcode-title">ENTER THE PASSCODE</h1>
+    <div class="passcode-label">Access required</div>
 
-        <div class="passcodeLock">
-            🔐
-        </div>
+    <input
+      type="password"
+      id="passcodeInput"
+      class="passcode-input"
+      autocomplete="off"
+      inputmode="numeric"
+      maxlength="4"
+      aria-label="Passcode"
+      placeholder="Enter passcode"
+    />
 
-        <div class="passcodeSmall">
-            PRIVATE SURPRISE
-        </div>
+    <button class="passcode-btn" id="unlockBtn" type="button">UNLOCK</button>
 
-        <h1>
-            Enter Passcode
-        </h1>
-
-        <p>
-            Enter the passcode to open your surprise.
-        </p>
-
-        <input
-            id="zainaPasscode"
-            type="password"
-            inputmode="numeric"
-            maxlength="4"
-            placeholder="••••"
-            autocomplete="off"
-        />
-
-        <button
-            id="passcodeButton"
-            type="button"
-            onclick="checkZainaPasscode()"
-        >
-            UNLOCK
-        </button>
-
-        <div
-            id="passcodeError"
-        ></div>
-
-    </div>
+    <div class="passcode-message" id="passcodeMessage" aria-live="polite"></div>
+  </div>
 
 </div>
 
@@ -3062,204 +3127,105 @@ function celebration(){
 
 
 
-/* ZAINA PASSCODE JS START */
+/* Old, conflicting passcode script removed. Consolidated passcode flow
+   is implemented earlier in the file using the `passcodeInput` and
+   `unlockBtn` elements (correct code: 1910). This block was removed
+   to avoid duplicate/incorrect behavior (old code required 1990).
+*/
 
-let zainaUnlocked = false;
+</script>
 
-function checkZainaPasscode(){
+<script>
+// Passcode gate behavior (non-persistent, correct code: 1910)
+(function(){
+    const passcodeScreen = document.getElementById('passcodeScreen');
+    const passcodeInput = document.getElementById('passcodeInput');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const passcodeMessage = document.getElementById('passcodeMessage');
+    const passcodeCard = document.getElementById('passcodeCard');
 
-    const input =
-        document.getElementById("zainaPasscode");
-
-    const screen =
-        document.getElementById("passcodeScreen");
-
-    const error =
-        document.getElementById("passcodeError");
-
-    const box =
-        document.querySelector(".passcodeBox");
-
-    if(!input || !screen){
-        return;
+    function setMessage(text, isError){
+        passcodeMessage.textContent = text;
+        passcodeMessage.classList.toggle('error', !!isError);
+        passcodeMessage.classList.add('show');
     }
 
-    const entered =
-        input.value.trim();
+    function clearMessage(){
+        passcodeMessage.textContent = '';
+        passcodeMessage.classList.remove('show','error');
+    }
 
-    /* CORRECT PASSCODE */
+    function lockUnlockButton(disabled){
+        unlockBtn.disabled = !!disabled;
+        unlockBtn.style.opacity = disabled ? '0.7' : '';
+    }
 
-    if(entered === "1990"){
-
-        zainaUnlocked = true;
-
-        if(error){
-            error.textContent = "Unlocked ✓";
-            error.style.color = "#8fffc1";
+    function showSparkles(){
+        // subtle sparkle: create a few floating hearts
+        for(let i=0;i<8;i++){
+            setTimeout(()=>{
+                if(typeof createFloatingHeart==='function') createFloatingHeart();
+            }, i*80);
         }
+    }
 
-        input.disabled = true;
+    function unlockSuccess(){
+        lockUnlockButton(true);
+        passcodeCard.classList.add('success');
+        setMessage('Access granted', false);
+        showSparkles();
+        setTimeout(()=>{
+            passcodeScreen.classList.add('hide');
+            passcodeScreen.setAttribute('aria-hidden','true');
+            passcodeScreen.classList.remove('active');
+            // ensure intro is visible
+            const intro = document.getElementById('intro');
+            if(intro){ intro.classList.remove('hide'); }
+        }, 380);
+    }
 
-        const button =
-            document.getElementById("passcodeButton");
-
-        if(button){
-            button.disabled = true;
-            button.style.opacity = ".6";
+    function attemptUnlock(){
+        const value = (passcodeInput && passcodeInput.value || '').trim();
+        if(value === '1910'){
+            unlockSuccess();
+            return;
         }
-
-        setTimeout(function(){
-
-            screen.classList.add("unlocked");
-
-            setTimeout(function(){
-
-                screen.style.display = "none";
-
-            },750);
-
-        },350);
-
-        return;
+        // wrong
+        setMessage('Incorrect passcode\nPlease try again.', true);
+        passcodeCard.classList.remove('shake');
+        void passcodeCard.offsetWidth;
+        passcodeCard.classList.add('shake');
+        if(passcodeInput) passcodeInput.value='';
+        if(passcodeInput) passcodeInput.focus();
     }
 
-    /* WRONG PASSCODE */
+    // numeric only
+    if(passcodeInput){
+        passcodeInput.addEventListener('input', function(){
+            this.value = this.value.replace(/\D/g,'').slice(0,4);
+        });
 
-    if(error){
-
-        error.textContent =
-            "Incorrect passcode. Try again.";
-
-        error.style.color =
-            "#ff719f";
+        passcodeInput.addEventListener('keydown', function(e){
+            if(e.key === 'Enter') attemptUnlock();
+        });
     }
 
-    input.value = "";
+    if(unlockBtn) unlockBtn.addEventListener('click', attemptUnlock);
 
-    if(box){
-
-        box.classList.remove(
-            "passcodeShake"
-        );
-
-        void box.offsetWidth;
-
-        box.classList.add(
-            "passcodeShake"
-        );
-    }
-
-    input.focus();
-}
-
-
-/* ENTER KEY */
-
-document.addEventListener(
-    "keydown",
-    function(e){
-
-        const screen =
-            document.getElementById(
-                "passcodeScreen"
-            );
-
-        if(
-            e.key === "Enter" &&
-            screen &&
-            !screen.classList.contains("unlocked")
-        ){
-
-            checkZainaPasscode();
+    // onload: ensure passcode is shown and intro/other screens are visually underneath but inaccessible
+    window.addEventListener('load', function(){
+        if(passcodeScreen){
+            passcodeScreen.classList.add('active');
+            passcodeScreen.classList.remove('hide');
+            passcodeScreen.setAttribute('aria-hidden','false');
         }
+        clearMessage();
+        if(passcodeInput){ setTimeout(()=>passcodeInput.focus(),300); }
+        // ensure no persisted unlocked state
+        // do not use localStorage/sessionStorage
+    });
 
-    }
-);
-
-
-/* ============================================================
-   FORCE LOCK ON EVERY PAGE LOAD
-   ============================================================ */
-
-window.addEventListener(
-    "load",
-    function(){
-
-        zainaUnlocked = false;
-
-        const screen =
-            document.getElementById(
-                "passcodeScreen"
-            );
-
-        const input =
-            document.getElementById(
-                "zainaPasscode"
-            );
-
-        if(screen){
-
-            screen.classList.remove(
-                "unlocked"
-            );
-
-            screen.style.display =
-                "flex";
-
-            screen.style.opacity =
-                "1";
-
-            screen.style.visibility =
-                "visible";
-
-            screen.style.pointerEvents =
-                "auto";
-        }
-
-        if(input){
-
-            input.disabled = false;
-
-            input.value = "";
-
-            setTimeout(function(){
-
-                input.focus();
-
-            },300);
-        }
-
-    }
-);
-
-
-/* ============================================================
-   NO LOCAL STORAGE
-   NO SESSION STORAGE
-   NO COOKIES
-   NO REMEMBER LOGIN
-   EVERY REFRESH REQUIRES 1990
-   ============================================================ */
-
-try{
-
-    localStorage.removeItem(
-        "zainaUnlocked"
-    );
-
-}catch(e){}
-
-try{
-
-    sessionStorage.removeItem(
-        "zainaUnlocked"
-    );
-
-}catch(e){}
-
-
-/* ZAINA PASSCODE JS END */
-
+})();
 </script>
 
 </body>
