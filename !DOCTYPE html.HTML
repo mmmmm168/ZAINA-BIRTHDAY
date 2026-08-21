@@ -2281,35 +2281,6 @@ input{
 
 /* ZAINA PASSCODE CSS END */
 
-
-/* ================= SELECTED PHOTO ================= */
-
-.popupPhotoWrap{
-    width:190px;
-    height:190px;
-    margin:0 auto 25px;
-    padding:5px;
-    border-radius:50%;
-    background:linear-gradient(
-        135deg,
-        #ff4c9b,
-        #b69aff,
-        #ffafd5
-    );
-    box-shadow:
-        0 0 55px
-        rgba(255,70,160,.45);
-}
-
-.popupPhoto{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-    border-radius:50%;
-    border:4px solid #0b0712;
-}
-
 </style>
 </head>
 
@@ -2919,95 +2890,61 @@ function openGift(number){
         return;
     }
 
-    selectedGift = number;
+    selectedGift=number;
 
     const selected =
-        document.getElementById("gift"+number);
+        document.getElementById(
+            "gift"+number
+        );
 
     if(selected){
-        selected.classList.add("selected");
+
+        selected.classList.add(
+            "selected"
+        );
     }
 
-    [1,2,3].forEach(function(n){
+    [1,2,3].forEach(
+        n=>{
 
-        if(n !== number){
+            if(n!==number){
 
-            const gift =
-                document.getElementById("gift"+n);
+                const gift =
+                    document.getElementById(
+                        "gift"+n
+                    );
 
-            if(gift){
-                gift.classList.add("locked");
+                if(gift){
+
+                    gift.classList.add(
+                        "locked"
+                    );
+                }
             }
+
         }
-    });
+    );
 
-    /*
-       OPEN PHOTO PICKER
-    */
+    document.getElementById(
+        "popupEmoji"
+    ).textContent =
+        gifts[number].emoji;
 
-    const picker =
-        document.getElementById("giftPhotoPicker");
+    document.getElementById(
+        "popupTitle"
+    ).textContent =
+        gifts[number].title;
 
-    if(picker){
+    document.getElementById(
+        "popupText"
+    ).textContent =
+        gifts[number].text;
 
-        picker.value = "";
+    document
+        .getElementById("overlay")
+        .classList.add("active");
 
-        picker.onchange = function(){
-
-            const file = picker.files[0];
-
-            if(!file){
-                return;
-            }
-
-            if(!file.type.startsWith("image/")){
-                alert("Please select an image.");
-                return;
-            }
-
-            const photoURL =
-                URL.createObjectURL(file);
-
-            const photo =
-                document.getElementById("popupPhoto");
-
-            const photoWrap =
-                document.getElementById("popupPhotoWrap");
-
-            if(photo){
-
-                photo.src = photoURL;
-            }
-
-            if(photoWrap){
-
-                photoWrap.style.display = "block";
-            }
-
-            document.getElementById(
-                "popupEmoji"
-            ).textContent =
-                gifts[number].emoji;
-
-            document.getElementById(
-                "popupTitle"
-            ).textContent =
-                gifts[number].title;
-
-            document.getElementById(
-                "popupText"
-            ).textContent =
-                gifts[number].text;
-
-            document
-                .getElementById("overlay")
-                .classList.add("active");
-
-            celebration();
-        };
-
-        picker.click();
-    }
+    celebration();
 }
 
 /* ================= CLOSE POPUP ================= */
@@ -3325,15 +3262,8 @@ try{
 
 </script>
 
-<input
-    type="file"
-    id="giftPhotoPicker"
-    accept="image/*"
-    style="display:none"
->
 </body>
 </html>
-
 
 
 
