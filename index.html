@@ -1272,11 +1272,107 @@ body{
         font-size:95px;
     }
 }
+#zainaPasscodeScreen{
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#05030a;
+    padding:20px;
+}
+
+.zainaPasscodeBox{
+    width:min(420px,100%);
+    padding:45px 30px;
+    text-align:center;
+    border-radius:30px;
+    background:linear-gradient(
+        145deg,
+        rgba(255,255,255,.08),
+        rgba(255,255,255,.025)
+    );
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(30px);
+    box-shadow:0 40px 120px rgba(0,0,0,.65);
+}
+
+.zainaPasscodeIcon{
+    font-size:55px;
+    margin-bottom:20px;
+}
+
+.zainaPasscodeBox h2{
+    color:white;
+    font-size:32px;
+}
+
+.zainaPasscodeBox p{
+    margin-top:12px;
+    color:#88818f;
+}
+
+#zainaPasscode{
+    display:block;
+    width:180px;
+    margin:28px auto 0;
+    padding:16px;
+    text-align:center;
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:12px;
+    color:white;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:18px;
+    outline:none;
+}
+
+#zainaPasscode:focus{
+    border-color:#ffafd5;
+    box-shadow:0 0 30px rgba(255,80,160,.2);
+}
+
+#passcodeError{
+    margin-top:15px;
+    color:#ff6b9d;
+    font-size:13px;
+    opacity:0;
+    transition:.3s;
+}
 </style>
 </head>
 
 
 <body>
+<div id="zainaPasscodeScreen">
+
+    <div class="zainaPasscodeBox">
+
+        <div class="zainaPasscodeIcon">🔒</div>
+
+        <h2>Enter Passcode</h2>
+
+        <p>Enter the 4-digit passcode to continue.</p>
+
+        <input
+            id="zainaPasscode"
+            type="password"
+            maxlength="4"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="••••"
+            oninput="autoCheckZainaPasscode()"
+        >
+
+        <div id="passcodeError">
+            Wrong passcode
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- BACKGROUND -->
@@ -1582,6 +1678,20 @@ body{
         <p id="popupText">
             Something special is waiting.
         </p>
+        <img
+            id="popupPhoto"
+            src="./REAL.jpeg"
+            alt=""
+            style="
+                display:block;
+                width:180px;
+                height:auto;
+                margin:18px auto 0;
+                border-radius:18px;
+                object-fit:cover;
+                box-shadow:0 15px 45px rgba(0,0,0,.45);
+            "
+        >
 
     </div>
 
@@ -2031,40 +2141,81 @@ function celebration(){
 
 function autoCheckZainaPasscode(){
 
-    const input = document.getElementById("zainaPasscode");
+    const input =
+        document.getElementById("zainaPasscode");
 
     if(!input) return;
 
     input.value =
         input.value.replace(/\D/g,"").slice(0,4);
 
-    if(input.value.length === 4){
+    if(input.value.length !== 4){
+        return;
+    }
 
-        if(input.value === "1510"){
+    if(input.value === "1510"){
 
-            checkZainaPasscode();
+        const screen =
+            document.getElementById(
+                "zainaPasscodeScreen"
+            );
 
-        }else{
+        /*
+         * Hide passcode screen
+         */
+        screen.style.opacity = "0";
+        screen.style.pointerEvents = "none";
+        screen.style.transition = "opacity .6s ease";
 
-            input.value = "";
+        /*
+         * Also hide the large intro screen
+         * so the birthday page appears cleanly.
+         */
+        const intro =
+            document.getElementById("intro");
 
-            const error =
-                document.getElementById("passcodeError");
+        if(intro){
+            intro.classList.add("hide");
+        }
 
-            if(error){
-                error.textContent = "Wrong passcode";
-                error.style.opacity = "1";
+        setTimeout(function(){
 
-                setTimeout(()=>{
-                    error.style.opacity = "0";
-                },800);
+            if(screen){
+                screen.remove();
             }
 
-            input.focus();
+        },650);
+
+    }else{
+
+        const error =
+            document.getElementById(
+                "passcodeError"
+            );
+
+        input.value = "";
+
+        if(error){
+
+            error.textContent =
+                "Wrong passcode";
+
+            error.style.opacity = "1";
+
+            setTimeout(function(){
+
+                error.style.opacity = "0";
+
+            },900);
         }
+
+        input.focus();
     }
 }
 </script>
 
 </body>
 </html>
+
+
+
