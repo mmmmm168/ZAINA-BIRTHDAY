@@ -15,7 +15,7 @@
 }
 
 html{
-    scroll-behavior:auto;
+    scroll-behavior:smooth;
 }
 
 body{
@@ -135,6 +135,7 @@ body{
         transform:scale(1.4);
     }
 }
+
 
 /* ================= INTRO ================= */
 
@@ -309,6 +310,7 @@ body{
     background:
         rgba(255,70,160,.12);
 }
+
 
 /* ================= HERO ================= */
 
@@ -500,6 +502,7 @@ body{
     }
 }
 
+
 /* ================= CONTENT ================= */
 
 #content{
@@ -525,6 +528,7 @@ body{
         transform:none;
     }
 }
+
 
 /* ================= MESSAGE ================= */
 
@@ -617,6 +621,7 @@ body{
     font-size:20px !important;
 }
 
+
 /* ================= GIFTS ================= */
 
 .gifts{
@@ -693,6 +698,7 @@ body{
     color:#ffafd5;
 }
 
+
 /* ================= GIFT GRID ================= */
 
 .giftGrid{
@@ -704,6 +710,7 @@ body{
 
     gap:35px;
 }
+
 
 /* ================= GIFT BOX ================= */
 
@@ -817,6 +824,13 @@ body{
     font-weight:900;
 }
 
+
+/*
+ IMPORTANT:
+ Inside content is NOT shown here.
+ Only the gift emoji and number are visible.
+*/
+
 .giftEmoji{
 
     font-size:110px;
@@ -848,6 +862,7 @@ body{
 
     letter-spacing:3px;
 }
+
 
 /* ================= LOCKED ================= */
 
@@ -904,6 +919,7 @@ body{
         transform:scale(1);
     }
 }
+
 
 /* ================= SIGNATURE ================= */
 
@@ -1002,6 +1018,7 @@ body{
 
     text-transform:uppercase;
 }
+
 
 /* ================= POPUP ================= */
 
@@ -1149,6 +1166,7 @@ body{
         scale(1.1);
 }
 
+
 /* ================= FLOATING HEARTS ================= */
 
 .floatingHeart{
@@ -1191,6 +1209,7 @@ body{
     }
 }
 
+
 /* ================= CONFETTI ================= */
 
 .confetti{
@@ -1225,6 +1244,7 @@ body{
     }
 }
 
+
 /* ================= RESPONSIVE ================= */
 
 @media(max-width:800px){
@@ -1255,7 +1275,9 @@ body{
 </style>
 </head>
 
+
 <body>
+
 
 <!-- BACKGROUND -->
 
@@ -1268,6 +1290,7 @@ body{
     <div id="stars"></div>
 
 </div>
+
 
 <!-- ================= INTRO ================= -->
 
@@ -1301,6 +1324,7 @@ body{
     </div>
 
 </div>
+
 
 <!-- ================= HERO ================= -->
 
@@ -1343,9 +1367,11 @@ body{
 
 </section>
 
+
 <!-- ================= CONTENT ================= -->
 
 <div id="content">
+
 
     <!-- MESSAGE -->
 
@@ -1401,6 +1427,7 @@ body{
 
     </section>
 
+
     <!-- ================= GIFTS ================= -->
 
     <section class="gifts">
@@ -1414,7 +1441,6 @@ body{
         </div>
 
         <div class="giftsIntro">
-
             Three mysterious gifts are waiting.
 
             <br>
@@ -1422,10 +1448,11 @@ body{
             <strong>
                 Only one can be opened.
             </strong>
-
         </div>
 
+
         <div class="giftGrid">
+
 
             <!-- GIFT 1 -->
 
@@ -1449,6 +1476,7 @@ body{
 
             </div>
 
+
             <!-- GIFT 2 -->
 
             <div
@@ -1470,6 +1498,7 @@ body{
                 </div>
 
             </div>
+
 
             <!-- GIFT 3 -->
 
@@ -1493,9 +1522,11 @@ body{
 
             </div>
 
+
         </div>
 
     </section>
+
 
     <!-- ================= SIGNATURE ================= -->
 
@@ -1519,6 +1550,7 @@ body{
     </section>
 
 </div>
+
 
 <!-- ================= POPUP ================= -->
 
@@ -1555,6 +1587,7 @@ body{
 
 </div>
 
+
 <script>
 
 /* ================= STARS ================= */
@@ -1580,6 +1613,7 @@ for(let i=0;i<160;i++){
 
     stars.appendChild(star);
 }
+
 
 /* ================= FLOATING HEARTS ================= */
 
@@ -1621,6 +1655,7 @@ setInterval(
     1000
 );
 
+
 /* ================= INTRO ================= */
 
 function enterSite(){
@@ -1629,6 +1664,7 @@ function enterSite(){
         .getElementById("intro")
         .classList.add("hide");
 }
+
 
 /* ================= TYPING ================= */
 
@@ -1716,53 +1752,50 @@ function typeText(){
 
 typeText();
 
+
 /* ================= SHOW SURPRISE ================= */
 
 function showSurprise(){
 
     const button =
-        document.getElementById("touchBtn");
-
-    if(button){
-
-        button.style.opacity="0";
-
-        button.style.transform=
-            "scale(.7)";
-
-        button.style.pointerEvents=
-            "none";
-
-        setTimeout(
-            function(){
-
-                button.style.display="none";
-
-            },
-            400
+        document.getElementById(
+            "touchBtn"
         );
-    }
 
-    const content =
-        document.getElementById("content");
+    button.style.opacity="0";
 
-    if(content){
+    button.style.transform=
+        "scale(.7)";
 
-        content.classList.add("show");
-    }
+    button.style.pointerEvents=
+        "none";
+
+    setTimeout(
+        ()=>{
+            button.style.display="none";
+        },
+        400
+    );
+
+    document
+        .getElementById("content")
+        .classList.add("show");
 
     celebration();
 
-    /*
-        IMPORTANT:
-        NO AUTO SCROLL
-        NO scrollIntoView
-        NO location
-        NO hash
-        NO focus
-        NO navigation
-    */
+    setTimeout(
+        ()=>{
+            document
+                .getElementById("content")
+                .scrollIntoView({
+                    behavior:"smooth",
+                    block:"start"
+                });
+        },
+        500
+    );
 }
+
 
 /* ================= GIFT DATA ================= */
 
@@ -1797,12 +1830,18 @@ const gifts = {
 
 };
 
+
 /* ================= ONLY ONE GIFT ================= */
 
 let selectedGift =
     null;
 
 function openGift(number){
+
+    /*
+        If one gift has already been opened,
+        do nothing.
+    */
 
     if(selectedGift !== null){
         return;
@@ -1815,33 +1854,36 @@ function openGift(number){
             "gift"+number
         );
 
-    if(selected){
+    selected.classList.add(
+        "selected"
+    );
 
-        selected.classList.add(
-            "selected"
-        );
-    }
+
+    /*
+        Lock the other two gifts.
+    */
 
     [1,2,3].forEach(
         n=>{
 
             if(n!==number){
 
-                const gift =
-                    document.getElementById(
+                document
+                    .getElementById(
                         "gift"+n
-                    );
-
-                if(gift){
-
-                    gift.classList.add(
+                    )
+                    .classList.add(
                         "locked"
                     );
-                }
             }
 
         }
     );
+
+
+    /*
+        Reveal the surprise.
+    */
 
     document.getElementById(
         "popupEmoji"
@@ -1858,12 +1900,15 @@ function openGift(number){
     ).textContent =
         gifts[number].text;
 
+
     document
         .getElementById("overlay")
         .classList.add("active");
 
+
     celebration();
 }
+
 
 /* ================= CLOSE POPUP ================= */
 
@@ -1874,7 +1919,10 @@ function closePopup(){
         .classList.remove("active");
 }
 
-/* ================= OUTSIDE POPUP ================= */
+
+/*
+    Clicking outside popup closes it.
+*/
 
 document
     .getElementById("overlay")
@@ -1889,7 +1937,10 @@ document
         }
     );
 
-/* ================= ESCAPE ================= */
+
+/*
+    Escape closes popup.
+*/
 
 document.addEventListener(
     "keydown",
@@ -1902,6 +1953,7 @@ document.addEventListener(
 
     }
 );
+
 
 /* ================= CONFETTI ================= */
 
@@ -1962,6 +2014,7 @@ function confetti(){
     );
 }
 
+
 /* ================= CELEBRATION ================= */
 
 function celebration(){
@@ -1975,6 +2028,42 @@ function celebration(){
     }
 }
 
+
+function autoCheckZainaPasscode(){
+
+    const input = document.getElementById("zainaPasscode");
+
+    if(!input) return;
+
+    input.value =
+        input.value.replace(/\D/g,"").slice(0,4);
+
+    if(input.value.length === 4){
+
+        if(input.value === "1510"){
+
+            checkZainaPasscode();
+
+        }else{
+
+            input.value = "";
+
+            const error =
+                document.getElementById("passcodeError");
+
+            if(error){
+                error.textContent = "Wrong passcode";
+                error.style.opacity = "1";
+
+                setTimeout(()=>{
+                    error.style.opacity = "0";
+                },800);
+            }
+
+            input.focus();
+        }
+    }
+}
 </script>
 
 </body>
