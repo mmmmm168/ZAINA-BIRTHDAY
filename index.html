@@ -8,23 +8,32 @@
   <style>
     html {
       width: 100%;
-      overflow-x: hidden;
-    }
-
-    body {
-      width: 100%;
-      min-width: 0;
+      max-width: 100%;
       overflow-x: hidden;
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
     }
 
-    img, video, canvas, svg {
+    body {
+      width: 100%;
       max-width: 100%;
-      display: block;
+      min-width: 0;
+      overflow-x: hidden;
+      overscroll-behavior-x: none;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
-    button {
+    img, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
       max-width: 100%;
       font: inherit;
     }
@@ -137,6 +146,154 @@
       0% { transform: translate3d(0, 0, 0) scale(0.8); opacity: 0; }
       15% { opacity: 0.8; }
       100% { transform: translate3d(var(--dx), var(--dy), 0) scale(1.4); opacity: 0; }
+    }
+
+    .passcode-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(circle at 50% 15%, rgba(176,120,255,0.18), transparent 30%), radial-gradient(circle at 50% 100%, rgba(255,118,196,0.12), transparent 35%), rgba(5,3,10,0.96);
+      text-align: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .passcode-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .passcode-card {
+      position: relative;
+      width: min(100%, 440px);
+      padding: clamp(26px, 6vw, 40px) clamp(18px, 5vw, 28px);
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 30px 70px rgba(14,7,22,0.7), 0 0 60px rgba(182,120,255,0.14);
+      backdrop-filter: blur(18px);
+      animation: passcodeReveal 0.9s ease both;
+    }
+
+    @keyframes passcodeReveal {
+      0% { opacity: 0; transform: translateY(18px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .passcode-card.success {
+      box-shadow: 0 30px 80px rgba(58,26,80,0.8), 0 0 70px rgba(255,126,190,0.32);
+    }
+
+    .passcode-card.shake {
+      animation: passcodeShake 0.38s ease-in-out;
+    }
+
+    @keyframes passcodeShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+
+    .passcode-kicker {
+      color: #ffafd5;
+      letter-spacing: 4px;
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .passcode-title {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(26px, 7vw, 42px);
+      letter-spacing: -1px;
+      font-weight: 800;
+    }
+
+    .passcode-label {
+      margin-top: 28px;
+      margin-bottom: 10px;
+      color: #d8d0df;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-align: left;
+    }
+
+    .passcode-input {
+      width: 100%;
+      min-height: 56px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      background: rgba(12,8,18,0.62);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .passcode-input:focus {
+      border-color: rgba(255,166,212,0.8);
+      box-shadow: 0 0 0 4px rgba(255,126,190,0.12);
+    }
+
+    .passcode-btn {
+      width: 100%;
+      min-height: 54px;
+      margin-top: 18px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ff4c9b, #845cff);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      box-shadow: 0 18px 40px rgba(255,76,155,0.24);
+    }
+
+    .passcode-btn:hover,
+    .passcode-btn:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(255,76,155,0.3);
+    }
+
+    .passcode-btn:disabled {
+      opacity: 0.7;
+      cursor: wait;
+      transform: none;
+    }
+
+    .passcode-message {
+      min-height: 52px;
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #ffb6d9;
+      white-space: pre-line;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .passcode-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .passcode-message.error {
+      color: #ffb9c7;
     }
 
     .intro {
@@ -482,9 +639,9 @@
 
     .gift {
       position: relative;
-      width: 100%;
-      min-height: 300px;
-      max-width: 340px;
+      width: min(100%, 340px);
+      min-height: clamp(250px, 28vw, 300px);
+      max-width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -552,8 +709,8 @@
 
     .giftBoxWrap {
       position: relative;
-      width: 150px;
-      height: 120px;
+      width: clamp(120px, 28vw, 150px);
+      height: clamp(90px, 22vw, 120px);
       margin: 10px auto 18px;
       transform-style: preserve-3d;
       filter: drop-shadow(0 18px 28px rgba(255,95,161,0.2));
@@ -978,6 +1135,10 @@
       }
     }
 
+    @media (max-width: 1280px) {
+      .giftGrid { gap: 24px; }
+    }
+
     @media (max-width: 1024px) {
       .giftGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -990,6 +1151,20 @@
       .enterBtn { width: min(90%, 360px); max-width: 360px; min-height: 52px; padding: 14px 22px; }
       .messageCard { width: calc(100% - 20px); }
       .popup { width: calc(100% - 24px); }
+    }
+
+    @media (max-width: 600px) {
+      .passcode-screen {
+        padding: 18px 14px;
+      }
+      .passcode-card {
+        width: min(100%, 360px);
+        border-radius: 22px;
+      }
+      .passcode-message {
+        min-height: 42px;
+        font-size: 13px;
+      }
     }
 
     @media (max-width: 500px) {
@@ -1042,7 +1217,7 @@
       }
       .gift {
         width: min(100%, 360px);
-        min-height: 290px;
+        min-height: clamp(240px, 52vw, 290px);
         padding: 24px 16px 18px;
       }
       .giftBoxWrap { transform: scale(0.9); }
@@ -1079,6 +1254,35 @@
         width: min(100%, 360px);
       }
     }
+
+    @media (orientation: landscape) and (max-height: 560px) {
+      .passcode-screen,
+      .intro-screen,
+      .hero-screen,
+      .message-screen,
+      .gifts-screen,
+      .finalReveal {
+        min-height: 100dvh;
+      }
+      .hero {
+        padding-top: 32px;
+        padding-bottom: 22px;
+      }
+      .messageCard {
+        padding-top: 18px;
+        padding-bottom: 16px;
+      }
+      .gift {
+        min-height: 220px;
+      }
+      .overlay {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+      .popup {
+        max-height: calc(100dvh - 16px);
+      }
+    }
   </style>
 </head>
 <body>
@@ -1087,7 +1291,27 @@
     <div class="scene-particles" id="sceneParticles"></div>
   </div>
 
-  <div class="screen intro-screen active" id="intro" data-screen="intro" aria-live="polite" aria-hidden="false">
+  <div class="screen passcode-screen active" id="passcodeScreen" data-screen="passcode" aria-live="polite" aria-hidden="false">
+    <div class="passcode-card" id="passcodeCard">
+      <div class="passcode-kicker">PRIVATE SURPRISE</div>
+      <h1 class="passcode-title">ENTER THE PASSCODE</h1>
+      <div class="passcode-label">Access required</div>
+      <input
+        type="password"
+        id="passcodeInput"
+        class="passcode-input"
+        autocomplete="off"
+        inputmode="numeric"
+        maxlength="4"
+        aria-label="Passcode"
+        placeholder="Enter passcode"
+      />
+      <button class="passcode-btn" id="unlockBtn" type="button">UNLOCK</button>
+      <div class="passcode-message" id="passcodeMessage" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="screen intro-screen" id="intro" data-screen="intro" aria-live="polite" aria-hidden="true">
     <div class="introContent">
       <div class="introSmall">A LITTLE SURPRISE</div>
       <div class="introTitle">FOR ZAINA</div>
@@ -1213,8 +1437,13 @@
       const finalReveal = document.getElementById('finalReveal');
       const messageCard = document.getElementById('messageCard');
       const overlay = document.getElementById('overlay');
+      const passcodeScreen = document.getElementById('passcodeScreen');
+      const passcodeInput = document.getElementById('passcodeInput');
+      const unlockBtn = document.getElementById('unlockBtn');
+      const passcodeMessage = document.getElementById('passcodeMessage');
+      const passcodeCard = document.getElementById('passcodeCard');
 
-      let currentScreen = 'intro';
+      let currentScreen = 'passcode';
       let isTransitioning = false;
       let messageToGiftTimer = null;
       let selectedGift = null;
@@ -1276,8 +1505,64 @@
         }
       }
 
+      function setPasscodeMessage(text, isError) {
+        passcodeMessage.textContent = text;
+        passcodeMessage.classList.toggle('error', Boolean(isError));
+        passcodeMessage.classList.add('show');
+      }
+
+      function clearPasscodeMessage() {
+        passcodeMessage.textContent = '';
+        passcodeMessage.classList.remove('show', 'error');
+      }
+
+      function unlockWebsite() {
+        const value = passcodeInput.value.trim();
+
+        if (value === '1910') {
+          unlockBtn.disabled = true;
+          passcodeCard.classList.add('success');
+          setPasscodeMessage('Access granted', false);
+          createSparkleBurst(window.innerWidth / 2, window.innerHeight / 2, 44);
+
+          setTimeout(function () {
+            passcodeScreen.classList.add('hidden');
+            passcodeScreen.classList.add('screen-exit');
+            setTimeout(function () {
+              passcodeScreen.classList.remove('active', 'screen-exit');
+              passcodeScreen.setAttribute('aria-hidden', 'true');
+              passcodeScreen.style.display = 'none';
+              showScreen('intro');
+            }, 260);
+          }, 220);
+          return;
+        }
+
+        passcodeCard.classList.remove('success');
+        passcodeCard.classList.remove('shake');
+        void passcodeCard.offsetWidth;
+        passcodeCard.classList.add('shake');
+        setPasscodeMessage('Incorrect passcode\nPlease try again.', true);
+        passcodeInput.value = '';
+        passcodeInput.focus();
+      }
+
+      passcodeInput.addEventListener('input', function () {
+        passcodeInput.value = passcodeInput.value.replace(/\D/g, '').slice(0, 4);
+      });
+
+      passcodeInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          unlockWebsite();
+        }
+      });
+
+      unlockBtn.addEventListener('click', unlockWebsite);
+
       function createStars() {
-        for (let i = 0; i < 170; i++) {
+        const starCount = window.innerWidth < 360 ? 90 : window.innerWidth < 768 ? 120 : 170;
+
+        for (let i = 0; i < starCount; i++) {
           const star = document.createElement('span');
           star.className = 'star';
           star.style.left = Math.random() * 100 + '%';
@@ -1289,7 +1574,9 @@
       }
 
       function createParticles() {
-        for (let i = 0; i < 28; i++) {
+        const particleCount = window.innerWidth < 420 ? 18 : window.innerWidth < 768 ? 22 : 28;
+
+        for (let i = 0; i < particleCount; i++) {
           const p = document.createElement('span');
           p.className = 'particle';
           p.style.left = Math.random() * 100 + '%';
