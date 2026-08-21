@@ -1454,26 +1454,9 @@ body {
     margin-right: auto;
 }
 
-#content {
-    width: 100%;
-    max-width: 100%;
-    display: block;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    height: auto;
-    max-height: none;
-    overflow: visible;
-}
 
-#content.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    height: auto;
-    max-height: none;
-    overflow: visible;
-}
+
+
 
 .overlay {
     position: fixed;
@@ -1650,52 +1633,9 @@ body {
    CONTENT — NORMAL DOCUMENT FLOW
    ========================================================= */
 
-#content {
-    position: relative !important;
 
-    display: block !important;
 
-    width: 100% !important;
-    max-width: 100% !important;
 
-    height: auto !important;
-    max-height: none !important;
-
-    overflow: visible !important;
-
-    opacity: 0 !important;
-    visibility: hidden !important;
-
-    pointer-events: none !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    transform: translateY(35px) !important;
-
-    transition:
-        opacity 1s ease,
-        transform 1s ease,
-        visibility 1s ease !important;
-}
-
-#content.show {
-    display: block !important;
-
-    width: 100% !important;
-
-    height: auto !important;
-    max-height: none !important;
-
-    overflow: visible !important;
-
-    opacity: 1 !important;
-    visibility: visible !important;
-
-    pointer-events: auto !important;
-
-    transform: translateY(0) !important;
-}
 
 /* =========================================================
    MESSAGE — EXACT CENTER
@@ -1960,6 +1900,210 @@ body {
         width: calc(100% - 6px) !important;
     }
 }
+
+/* ============================================================
+   ZAINA FINAL CONTENT FLOW
+   ============================================================ */
+
+#content {
+    display: block !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+
+    opacity: 0 !important;
+    visibility: hidden !important;
+
+    pointer-events: none !important;
+
+    transform: translateY(30px) !important;
+
+    overflow: hidden !important;
+
+    transition:
+        opacity .9s ease,
+        transform .9s ease,
+        visibility 0s linear .9s !important;
+}
+
+#content.show {
+    display: block !important;
+
+    height: auto !important;
+    max-height: none !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    pointer-events: auto !important;
+
+    transform: translateY(0) !important;
+
+    overflow: visible !important;
+
+    transition:
+        opacity .9s ease,
+        transform .9s ease,
+        visibility 0s !important;
+}
+
+/* HERO NEVER DISAPPEARS */
+
+.hero {
+    position: relative !important;
+
+    width: 100% !important;
+
+    min-height: 100dvh !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0 !important;
+
+    scroll-margin: 0 !important;
+}
+
+.heroContent {
+    width: min(1250px, calc(100% - 30px)) !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    text-align: center !important;
+}
+
+/* MESSAGE */
+
+.message {
+    width: 100% !important;
+
+    display: flex !important;
+
+    justify-content: center !important;
+
+    margin: 0 auto !important;
+
+    padding:
+        clamp(50px, 8vw, 110px)
+        15px !important;
+}
+
+.messageCard {
+    width: min(1200px, 100%) !important;
+
+    margin: 0 auto !important;
+
+    text-align: center !important;
+
+    overflow: visible !important;
+}
+
+.messageCard p {
+    max-width: 1000px !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    overflow: visible !important;
+}
+
+/* GIFTS */
+
+.gifts {
+    width: 100% !important;
+
+    margin: 0 auto !important;
+
+    text-align: center !important;
+}
+
+.giftGrid {
+    width: min(1300px, calc(100% - 30px)) !important;
+
+    margin: 0 auto !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 30px !important;
+}
+
+/* POPUP */
+
+.overlay {
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 15px !important;
+
+    z-index: 999999 !important;
+}
+
+.popup {
+    margin: auto !important;
+
+    max-width: min(700px, calc(100vw - 30px)) !important;
+
+    max-height: calc(100dvh - 30px) !important;
+
+    overflow-y: auto !important;
+}
+
+@media(max-width:800px) {
+
+    .giftGrid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .heroContent {
+        width: calc(100% - 20px) !important;
+    }
+}
+
+@media(max-width:420px) {
+
+    .hero {
+        padding:
+            20px 8px !important;
+    }
+
+    .heroName {
+        font-size:
+            clamp(48px, 18vw, 85px) !important;
+    }
+
+    .message {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    .messageCard {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+}
+
 </style>
 
 <script>
@@ -1968,6 +2112,28 @@ if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
 }
 </script>
+
+<script>
+/* ============================================================
+   RESET STATE ON EVERY REFRESH
+   ============================================================ */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    passwordUnlocked = false;
+    selectedGift = null;
+    surpriseShown = false;
+
+    const content =
+        document.getElementById("content");
+
+    if (content) {
+        content.classList.remove("show");
+    }
+
+});
+</script>
+
 </head>
 <body>
   <div class="bg">
@@ -2346,12 +2512,7 @@ if ("scrollRestoration" in history) {
         messageCard.classList.add('show');
       }
 
-      function showSurprise() {
-        if (!passwordUnlocked || isTransitioning) return;
-
-        surpriseShown = true;
-        showScreen('message');
-      }
+      
 
       function handleTouchForSurprise() {
         if (isTransitioning || !passwordUnlocked) return;
@@ -2514,11 +2675,7 @@ if ("scrollRestoration" in history) {
    FINAL NO-AUTO-SKIP SHOW SURPRISE
    ========================================================= */
 
-function showSurprise() {
 
-    if (typeof passwordUnlocked !== "undefined") {
-        if (!passwordUnlocked) return;
-    }
 
     if (typeof surpriseShown !== "undefined") {
         if (surpriseShown) return;
@@ -2554,11 +2711,183 @@ function showSurprise() {
        NO SCROLL
        NO NAVIGATION
        NO scrollIntoView()
-       NO window.scrollTo()
-    */
+       NO */
 }
 </script>
+
+/* ============================================================
+   ZAINA FINAL STATE SYSTEM
+   ============================================================ */
+
+let passwordUnlocked = false;
+let selectedGift = null;
+let surpriseShown = false;
+
+
+/* ============================================================
+   TOUCH FOR SURPRISE
+   NO SCROLL
+   NO NAVIGATION
+   ============================================================ */
+
+function showSurprise() {
+
+    if (!passwordUnlocked) {
+        return;
+    }
+
+    if (surpriseShown) {
+        return;
+    }
+
+    surpriseShown = true;
+
+    const content =
+        document.getElementById("content");
+
+    if (!content) {
+        return;
+    }
+
+    /*
+       IMPORTANT:
+       We ONLY add the class.
+
+       We do NOT:
+       scroll
+       navigate
+       replace page
+       focus content
+       change hash
+    */
+
+    content.classList.add("show");
+
+    const button =
+        document.getElementById("touchBtn");
+
+    if (button) {
+
+        button.style.opacity = "0";
+
+        button.style.transform =
+            "scale(.85)";
+
+        button.style.pointerEvents =
+            "none";
+
+        setTimeout(function () {
+
+            button.style.display = "none";
+
+        }, 450);
+    }
+
+    if (typeof celebration === "function") {
+        celebration();
+    }
+}
+
+
+/* ============================================================
+   GIFT
+   ============================================================ */
+
+function openGift(number) {
+
+    if (!passwordUnlocked) {
+        return;
+    }
+
+    if (!surpriseShown) {
+        return;
+    }
+
+    if (selectedGift !== null) {
+        return;
+    }
+
+    selectedGift = number;
+
+    const selected =
+        document.getElementById(
+            "gift" + number
+        );
+
+    if (selected) {
+        selected.classList.add("selected");
+    }
+
+    [1,2,3].forEach(function(n) {
+
+        if (n !== number) {
+
+            const gift =
+                document.getElementById(
+                    "gift" + n
+                );
+
+            if (gift) {
+                gift.classList.add("locked");
+            }
+        }
+    });
+
+    if (typeof gifts !== "undefined") {
+
+        const data =
+            gifts[number];
+
+        if (data) {
+
+            const emoji =
+                document.getElementById(
+                    "popupEmoji"
+                );
+
+            const title =
+                document.getElementById(
+                    "popupTitle"
+                );
+
+            const text =
+                document.getElementById(
+                    "popupText"
+                );
+
+            if (emoji) {
+                emoji.textContent =
+                    data.emoji;
+            }
+
+            if (title) {
+                title.textContent =
+                    data.title;
+            }
+
+            if (text) {
+                text.textContent =
+                    data.text;
+            }
+        }
+    }
+
+    const overlay =
+        document.getElementById(
+            "overlay"
+        );
+
+    if (overlay) {
+        overlay.classList.add("active");
+    }
+
+    if (typeof celebration === "function") {
+        celebration();
+    }
+}
+
 </body>
 </html>
+
 
 
