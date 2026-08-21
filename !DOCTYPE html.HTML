@@ -2261,6 +2261,91 @@ canvas {
     }
 }
 
+
+/* =========================================================
+   FINAL ZERO-JUMP CONTENT REVEAL
+   ========================================================= */
+
+#content {
+    width: 100% !important;
+
+    opacity: 0;
+    visibility: hidden;
+
+    max-height: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+
+    transform: translateY(24px);
+}
+
+#content.show {
+    opacity: 1;
+    visibility: visible;
+
+    max-height: 100000px;
+
+    overflow: visible;
+
+    pointer-events: auto;
+
+    transform: translateY(0);
+
+    animation: zainaReveal 1s ease both;
+}
+
+@keyframes zainaReveal {
+
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*
+   Keep the hero in normal document flow.
+*/
+
+.hero {
+    position: relative !important;
+    width: 100% !important;
+}
+
+/*
+   Never create horizontal overflow.
+*/
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
+@media (max-width: 600px) {
+
+    .hero {
+        min-height: 100dvh !important;
+        width: 100% !important;
+    }
+
+    .heroContent {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    #content {
+        width: 100% !important;
+    }
+}
+
 </style>
 
 <script>
@@ -2675,49 +2760,37 @@ let surpriseShown = false;
 
 function showSurprise() {
 
-    if (!passwordUnlocked) {
-        return;
-    }
-
-    if (surpriseShown) {
-        return;
-    }
+    if (!passwordUnlocked) return;
+    if (surpriseShown) return;
 
     surpriseShown = true;
 
-    const content =
-        document.getElementById("content");
+    const content = document.getElementById("content");
+    const button = document.getElementById("touchBtn");
 
-    if (!content) {
-        return;
-    }
+    if (!content) return;
 
     /*
        IMPORTANT:
-       We ONLY add the class.
-
-       We do NOT:
-       scroll
-       navigate
-       replace page
-       focus content
-       change hash
+       Save the exact current viewport position.
+       Revealing content must NEVER move the page.
     */
 
+    const currentX = window.scrollX;
+    const currentY = window.scrollY;
+
+    /* Reveal content */
     content.classList.add("show");
 
-    const button =
-        document.getElementById("touchBtn");
-
+    /* Hide only the button */
     if (button) {
 
+        button.style.transition =
+            "opacity .45s ease, transform .45s ease";
+
         button.style.opacity = "0";
-
-        button.style.transform =
-            "scale(.85)";
-
-        button.style.pointerEvents =
-            "none";
+        button.style.transform = "scale(.85)";
+        button.style.pointerEvents = "none";
 
         setTimeout(function () {
 
@@ -2726,11 +2799,29 @@ function showSurprise() {
         }, 450);
     }
 
+    /*
+       Restore the exact viewport position after
+       the browser has recalculated the layout.
+    */
+
+    requestAnimationFrame(function () {
+
+        requestAnimationFrame(function () {
+
+            window.scrollTo({
+                left: currentX,
+                top: currentY,
+                behavior: "instant"
+            });
+
+        });
+
+    });
+
     if (typeof celebration === "function") {
         celebration();
     }
 }
-
 
 /* ============================================================
    GIFT
@@ -2831,6 +2922,7 @@ function openGift(number) {
 
 </body>
 </html>
+
 
 
 
